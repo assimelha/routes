@@ -81,6 +81,8 @@ defmodule Routes.Generator do
     } else {
       window.Routes = Routes;
     }
+
+    export default Routes;
     """
   end
 
@@ -185,7 +187,11 @@ defmodule Routes.Generator do
   # Add new helper function for generating RoutePathConfig
   defp generate_route_path_config(routes) do
     routes
-    |> Enum.map(fn route ->
+    |> Enum.group_by(& &1.path)
+    |> Enum.map(fn {path, path_routes} ->
+      # Use the first route's params since all routes with the same path should have the same params
+      route = List.first(path_routes)
+
       params =
         if Enum.empty?(route.params) do
           "Record<string, never>"
@@ -196,7 +202,7 @@ defmodule Routes.Generator do
           |> then(&"{#{&1}}")
         end
 
-      "\"#{route.path}\": #{params}"
+      "\"#{path}\": #{params}"
     end)
     |> Enum.join(";\n      ")
   end
