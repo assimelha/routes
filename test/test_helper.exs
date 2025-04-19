@@ -1,6 +1,3 @@
 ExUnit.start()
 
-defmodule Routes.TestController do
-  def init(opts), do: opts
-  def call(conn, _opts), do: conn
-end
+Code.require_file("test/support/test_controller.ex")

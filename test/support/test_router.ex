@@ -1,4 +1,4 @@
-defmodule Routes.TestRouter do
+defmodule TestSupport.Routes.TestRouter do
   use Phoenix.Router
   use Routes
 

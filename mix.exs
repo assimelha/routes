@@ -7,7 +7,6 @@ defmodule Routes.MixProject do
       version: "0.2.0",
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
-      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       description:
         "Automatically generate type-safe JavaScript and TypeScript route helpers from your Phoenix router, ensuring client-side routing stays in sync with your Phoenix routes",
@@ -19,9 +18,6 @@ defmodule Routes.MixProject do
       ]
     ]
   end
-
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
