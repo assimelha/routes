@@ -51,7 +51,7 @@ defmodule Routes.GeneratorTest do
         }
       ]
 
-      js_code = Routes.Generator.generate_javascript(routes)
+      _js_code = Routes.Generator.generate_javascript(routes)
 
       # This is a basic validation that the generated code is proper JSON
       # The actual JS template part will be wrapped around this
@@ -117,5 +117,31 @@ defmodule Routes.GeneratorTest do
       assert File.exists?(Path.join(temp_dir, "routes.js"))
       assert File.exists?(Path.join(temp_dir, "routes.d.ts"))
     end
+  end
+
+  test "includes support for CommonJS, ESM, and window exports" do
+    routes = [
+      %{
+        name: "user",
+        path: "/users/:id",
+        method: "GET",
+        controller: "Routes.TestController",
+        action: :show,
+        params: ["id"]
+      }
+    ]
+
+    js_code = Routes.Generator.generate_javascript(routes)
+
+    # CommonJS support
+    assert js_code =~ "if (typeof module !== 'undefined' && module.exports) {"
+    assert js_code =~ "module.exports = Routes;"
+
+    # window global support
+    assert js_code =~ "else if (typeof window !== 'undefined' && window) {"
+    assert js_code =~ "window.Routes = Routes;"
+
+    # ESM support
+    assert js_code =~ "export default Routes;"
   end
 end

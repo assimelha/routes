@@ -78,7 +78,7 @@ defmodule Routes.Generator do
 
     if (typeof module !== 'undefined' && module.exports) {
       module.exports = Routes;
-    } else {
+    } else if (typeof window !== 'undefined' && window) {
       window.Routes = Routes;
     }
 
